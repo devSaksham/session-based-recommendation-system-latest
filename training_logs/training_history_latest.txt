@@ -1,0 +1,31 @@
+[Data] Loading YooChoose...
+Using local YooChoose file: /content/KAN5 - Hybrid - Latest/Dataset/yoochoose-clicks.dat
+  filtered_unseen_val_targets=1285  kept_val_samples=10813  cold_start_removed=10.6%
+  n_items=10156  train=47507  test=10813
+  split_mode=random_session  train_ratio=0.800  train_sessions=11327  val_sessions=2832
+  train_samples=47507  val_samples=10813  avg_train_samples/session=4.19  avg_val_samples/session=3.82
+  unique_train_targets=7839  unique_val_targets=2876  val_target_seen_in_train=100.0%
+
+Best observed metrics from the latest shared run:
+
+Vanilla-GRU
+  Best vl_ndcg: 0.3004
+  Training time: 81.3s
+
+KAN-GRU
+  Best vl_ndcg: 0.3122
+  Training time: 112.8s
+
+Final comparison:
+  Val Loss:  Vanilla-GRU=5.9346  KAN-GRU=5.6468  KAN-GRU improvement=0.2878
+  Accuracy:  Vanilla-GRU=0.1703  KAN-GRU=0.1732  KAN-GRU improvement=0.0029
+  HR@10:     Vanilla-GRU=0.4464  KAN-GRU=0.4679  KAN-GRU improvement=0.0215
+  NDCG@10:   Vanilla-GRU=0.3004  KAN-GRU=0.3122  KAN-GRU improvement=0.0118
+  MRR@10:    Vanilla-GRU=0.2545  KAN-GRU=0.2632  KAN-GRU improvement=0.0087
+  Time(s):   Vanilla-GRU=81.3    KAN-GRU=112.8   KAN-GRU extra time=31.5
+  Params:    Vanilla-GRU=2,133,547  KAN-GRU=2,280,619  KAN-GRU extra params=147,072
+
+Notes:
+  KAN-GRU outperformed Vanilla-GRU on all tracked evaluation metrics.
+  KAN-GRU peaked around epoch 18 and then started overfitting, so early stopping was useful.
+  Future runs of compare.py automatically save the full console history to training_logs/training_history_<timestamp>.txt.

@@ -4,6 +4,9 @@ Dataset: YooChoose when available, otherwise patterned synthetic fallback.
 Run:  python compare.py
 """
 import os
+import sys
+import atexit
+from datetime import datetime
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -30,8 +33,33 @@ np.random.seed(SEED)
 
 CHECKPOINT_DIR = BASE_DIR / "checkpoints"
 PLOT_DIR = BASE_DIR / "plots"
+LOG_DIR = BASE_DIR / "training_logs"
 CHECKPOINT_DIR.mkdir(exist_ok=True)
 PLOT_DIR.mkdir(exist_ok=True)
+LOG_DIR.mkdir(exist_ok=True)
+
+
+class TeeLogger:
+    def __init__(self, *streams):
+        self.streams = streams
+
+    def write(self, text):
+        for stream in self.streams:
+            stream.write(text)
+            stream.flush()
+
+    def flush(self):
+        for stream in self.streams:
+            stream.flush()
+
+
+log_path = LOG_DIR / f"training_history_{datetime.now():%Y%m%d_%H%M%S}.txt"
+log_file = open(log_path, "w", encoding="utf-8")
+sys.stdout = TeeLogger(sys.stdout, log_file)
+sys.stderr = TeeLogger(sys.stderr, log_file)
+atexit.register(log_file.close)
+
+print(f"Training log -> {log_path}")
 
 print("\n[Data] Loading YooChoose...")
 train_seqs, test_seqs, n_items = load_data()
