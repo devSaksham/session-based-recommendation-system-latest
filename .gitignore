@@ -1,0 +1,29 @@
+# Python cache and local environments
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Training outputs
+checkpoints/
+plots/
+*.pt
+*.pth
+*.ckpt
+
+# Dataset files
+data/
+Dataset/
+
+# Logs and local runtime files
+*.log
+.env
+.env.*
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

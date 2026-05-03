@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from kan_gru import KANGRULayer
-from config import EMBEDDING_DIM, HIDDEN_DIM, DROPOUT
+from config import EMBEDDING_DIM, HIDDEN_DIM, DROPOUT, KAN_GRU_LAYERS
 
 
 class KANGRUModel(nn.Module):
@@ -19,7 +19,8 @@ class KANGRUModel(nn.Module):
     def __init__(self, n_items):
         super().__init__()
         self.emb  = nn.Embedding(n_items, EMBEDDING_DIM, padding_idx=0)
-        self.gru  = KANGRULayer(EMBEDDING_DIM, HIDDEN_DIM, num_layers=2, dropout=DROPOUT)
+        self.gru  = KANGRULayer(EMBEDDING_DIM, HIDDEN_DIM, num_layers=KAN_GRU_LAYERS,
+                                dropout=DROPOUT)
         self.drop = nn.Dropout(DROPOUT)
         self.fc   = nn.Linear(HIDDEN_DIM, n_items - 1)
 

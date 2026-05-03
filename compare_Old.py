@@ -34,14 +34,12 @@ for name, ModelClass in [("RNN", RNNModel), ("KAN", KANModel), ("Hybrid", Hybrid
     torch.save(model.state_dict(), f"checkpoints/{name.lower()}.pt")
     # Final val metrics
     crit = nn.CrossEntropyLoss()
-    vl, va, vhr, vndcg = _run_epoch(model, test_loader, crit)
+    vl, va, vhr, vndcg, vmrr = _run_epoch(model, test_loader, crit)
     results[name] = dict(hist=hist, time=elapsed, params=n_params(model),
-                         loss=vl, acc=va, hr=vhr, ndcg=vndcg)
+                         loss=vl, acc=va, hr=vhr, ndcg=vndcg, mrr=vmrr)
 
 # ── Plots ────────────────────────────────────────────────────────
 COLORS = {"RNN": "#E74C3C", "KAN": "#2ECC71", "Hybrid": "#3498DB"}
-epochs = range(1, EPOCHS + 1)
-
 metrics_plot = [
     ("tr_loss",  "Training Loss",    "Loss"),
     ("vl_loss",  "Validation Loss",  "Loss"),
@@ -56,6 +54,7 @@ axes = axes.flatten()
 
 for ax, (key, title, ylabel) in zip(axes, metrics_plot):
     for name, r in results.items():
+        epochs = range(1, len(r["hist"][key]) + 1)
         ax.plot(epochs, r["hist"][key], "o-", label=name, color=COLORS[name], ms=4)
     ax.set_title(title); ax.set_xlabel("Epoch"); ax.set_ylabel(ylabel)
     ax.legend(); ax.grid(True, alpha=0.3)

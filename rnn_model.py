@@ -8,8 +8,8 @@ class RNNModel(nn.Module):
     def __init__(self, n_items):
         super().__init__()
         self.emb  = nn.Embedding(n_items, EMBEDDING_DIM, padding_idx=0)
-        self.gru  = nn.GRU(EMBEDDING_DIM, HIDDEN_DIM, num_layers=2,
-                           batch_first=True, dropout=DROPOUT)
+        self.gru  = nn.GRU(EMBEDDING_DIM, HIDDEN_DIM, num_layers=RNN_LAYERS,
+                           batch_first=True, dropout=DROPOUT if RNN_LAYERS > 1 else 0.0)
         self.drop = nn.Dropout(DROPOUT)
         self.fc   = nn.Linear(HIDDEN_DIM, n_items - 1)
 

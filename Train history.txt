@@ -1,0 +1,238 @@
+PS C:\WINDOWS\system32> & "c:/Users/NS/Downloads/Session based recommentation system/.venv/Scripts/python.exe" "c:/Users/NS/Downloads/Session based recommentation system/End Sem/KAN5 - Hybrid - Latest/KAN5 - Hybrid - Latest/compare.py"
+
+[Data] Loading YooChoose...
+Using local YooChoose file: C:\Users\NS\Downloads\Session based recommentation system\Dataset\yoochoose-clicks.dat
+  n_items=10934  train=81549  test=21268
+
+==============================================================================
+Training setup: Vanilla-GRU
+==============================================================================
+Device: cpu
+Model class: RNNModel
+Trainable parameters: 2,283,701
+
+Hyperparameters
+Name                              Value
+--------------------------------  -----------------
+BATCH_SIZE                        256
+DROPOUT                           0.2
+EMBEDDING_DIM                     64
+EPOCHS                            15
+HIDDEN_DIM                        128
+KAN_GRID                          5
+KAN_GRU_LAYERS                    1
+KAN_ON_GATES                      False
+KAN_ORDER                         3
+LABEL_SMOOTHING                   0.05
+LR                                0.0005
+MAX_SEQ_LEN                       20
+MAX_SESSIONS                      40000
+MIN_DELTA                         0.0001
+MIN_SEQ_LEN                       3
+PATIENCE                          3
+RNN_LAYERS                        2
+SEED                              42
+SYNTHETIC_ITEMS                   1000
+TOP_K                             10
+TRAIN_RATIO                       0.8
+WEIGHT_DECAY                      0.0001
+TRAIN_BATCHES                     319
+VAL_BATCHES                       84
+OPTIMIZER                         AdamW
+LOSS                              CrossEntropyLoss
+SCHEDULER                         ReduceLROnPlateau
+OPTIMIZER_LR                      0.0005
+OPTIMIZER_BETAS                   (0.9, 0.999)
+OPTIMIZER_EPS                     1e-08
+OPTIMIZER_WEIGHT_DECAY            0.0001
+OPTIMIZER_AMSGRAD                 False
+OPTIMIZER_MAXIMIZE                False
+OPTIMIZER_FOREACH                 None
+OPTIMIZER_CAPTURABLE              False
+OPTIMIZER_DIFFERENTIABLE          False
+OPTIMIZER_FUSED                   None
+OPTIMIZER_DECOUPLED_WEIGHT_DECAY  True
+SCHEDULER_LAST_EPOCH              0
+
+Model architecture
+RNNModel(
+  (emb): Embedding(10934, 64, padding_idx=0)
+  (gru): GRU(64, 128, num_layers=2, batch_first=True, dropout=0.2)
+  (drop): Dropout(p=0.2, inplace=False)
+  (fc): Linear(in_features=128, out_features=10933, bias=True)
+)
+
+Model parameters
+Name              Shape      Count      Trainable
+----------------  ---------  ---------  ---------
+emb.weight        10934x64   699,776    True
+gru.weight_ih_l0  384x64     24,576     True
+gru.weight_hh_l0  384x128    49,152     True
+gru.bias_ih_l0    384        384        True
+gru.bias_hh_l0    384        384        True
+gru.weight_ih_l1  384x128    49,152     True
+gru.weight_hh_l1  384x128    49,152     True
+gru.bias_ih_l1    384        384        True
+gru.bias_hh_l1    384        384        True
+fc.weight         10933x128  1,399,424  True
+fc.bias           10933      10,933     True
+
+-- Vanilla-GRU ----------------------------------------------
+ Ep  TrLoss   TrAcc  VlLoss   VlAcc   HR@10    NDCG
+  1  8.2341  0.0173  7.7802  0.0327  0.1289  0.0739
+  2  7.4096  0.0476  7.3856  0.0649  0.2012  0.1271
+  3  6.9797  0.0779  7.1138  0.0940  0.2601  0.1712
+  4  6.6351  0.1043  6.9158  0.1115  0.2990  0.1993
+  5  6.3472  0.1234  6.7664  0.1254  0.3250  0.2199
+  6  6.1113  0.1396  6.6642  0.1342  0.3482  0.2352
+  7  5.9049  0.1542  6.5707  0.1412  0.3638  0.2466
+  8  5.7268  0.1645  6.5057  0.1466  0.3769  0.2559
+  9  5.5758  0.1759  6.4553  0.1506  0.3873  0.2631
+ 10  5.4401  0.1846  6.4076  0.1547  0.3953  0.2689
+ 11  5.3218  0.1926  6.3712  0.1556  0.4048  0.2742
+ 12  5.2132  0.2009  6.3373  0.1585  0.4097  0.2782
+ 13  5.1119  0.2089  6.3117  0.1605  0.4141  0.2813
+ 14  5.0205  0.2149  6.2962  0.1632  0.4188  0.2850
+ 15  4.9404  0.2210  6.2748  0.1642  0.4239  0.2880
+  Best validation loss: 6.2748
+  Training time: 2311.4s
+
+==============================================================================
+Training setup: KAN-GRU
+==============================================================================
+Device: cpu
+Model class: KANGRUModel
+Trainable parameters: 2,332,469
+
+Hyperparameters
+Name                              Value
+--------------------------------  -----------------
+BATCH_SIZE                        256
+DROPOUT                           0.2
+EMBEDDING_DIM                     64
+EPOCHS                            15
+HIDDEN_DIM                        128
+KAN_GRID                          5
+KAN_GRU_LAYERS                    1
+KAN_ON_GATES                      False
+KAN_ORDER                         3
+LABEL_SMOOTHING                   0.05
+LR                                0.0005
+MAX_SEQ_LEN                       20
+MAX_SESSIONS                      40000
+MIN_DELTA                         0.0001
+MIN_SEQ_LEN                       3
+PATIENCE                          3
+RNN_LAYERS                        2
+SEED                              42
+SYNTHETIC_ITEMS                   1000
+TOP_K                             10
+TRAIN_RATIO                       0.8
+WEIGHT_DECAY                      0.0001
+TRAIN_BATCHES                     319
+VAL_BATCHES                       84
+OPTIMIZER                         AdamW
+LOSS                              CrossEntropyLoss
+SCHEDULER                         ReduceLROnPlateau
+OPTIMIZER_LR                      0.0005
+OPTIMIZER_BETAS                   (0.9, 0.999)
+OPTIMIZER_EPS                     1e-08
+OPTIMIZER_WEIGHT_DECAY            0.0001
+OPTIMIZER_AMSGRAD                 False
+OPTIMIZER_MAXIMIZE                False
+OPTIMIZER_FOREACH                 None
+OPTIMIZER_CAPTURABLE              False
+OPTIMIZER_DIFFERENTIABLE          False
+OPTIMIZER_FUSED                   None
+OPTIMIZER_DECOUPLED_WEIGHT_DECAY  True
+SCHEDULER_LAST_EPOCH              0
+
+Model architecture
+KANGRUModel(
+  (emb): Embedding(10934, 64, padding_idx=0)
+  (gru): KANGRULayer(
+    (cells): ModuleList(
+      (0): KANGRUCell(
+        (gate_z): Linear(in_features=192, out_features=128, bias=True)
+        (gate_r): Linear(in_features=192, out_features=128, bias=True)
+        (kan_n): KANLinear(
+          (base_activation): SiLU()
+        )
+        (x_proj): Linear(in_features=64, out_features=128, bias=True)
+        (norm_z): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (norm_r): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (norm_n): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (drop): Dropout(p=0.2, inplace=False)
+  )
+  (drop): Dropout(p=0.2, inplace=False)
+  (fc): Linear(in_features=128, out_features=10933, bias=True)
+)
+
+Model parameters
+Name                             Shape      Count      Trainable
+-------------------------------  ---------  ---------  ---------
+emb.weight                       10934x64   699,776    True
+gru.cells.0.gate_z.weight        128x192    24,576     True
+gru.cells.0.gate_z.bias          128        128        True
+gru.cells.0.gate_r.weight        128x192    24,576     True
+gru.cells.0.gate_r.bias          128        128        True
+gru.cells.0.kan_n.base_weight    128x128    16,384     True
+gru.cells.0.kan_n.spline_weight  128x128x8  131,072    True
+gru.cells.0.kan_n.spline_scaler  128x128    16,384     True
+gru.cells.0.x_proj.weight        128x64     8,192      True
+gru.cells.0.x_proj.bias          128        128        True
+gru.cells.0.norm_z.weight        128        128        True
+gru.cells.0.norm_z.bias          128        128        True
+gru.cells.0.norm_r.weight        128        128        True
+gru.cells.0.norm_r.bias          128        128        True
+gru.cells.0.norm_n.weight        128        128        True
+gru.cells.0.norm_n.bias          128        128        True
+fc.weight                        10933x128  1,399,424  True
+fc.bias                          10933      10,933     True
+
+-- KAN-GRU ----------------------------------------------
+ Ep  TrLoss   TrAcc  VlLoss   VlAcc   HR@10    NDCG
+  1  8.2602  0.0260  7.7675  0.0495  0.1531  0.0963
+  2  7.3500  0.0726  7.2725  0.0968  0.2424  0.1657
+  3  6.8463  0.1092  6.9658  0.1179  0.2930  0.2014
+  4  6.4662  0.1331  6.7633  0.1327  0.3335  0.2279
+  5  6.1610  0.1515  6.6186  0.1420  0.3615  0.2463
+  6  5.9128  0.1681  6.5190  0.1497  0.3775  0.2581
+  7  5.6962  0.1825  6.4325  0.1539  0.3924  0.2677
+  8  5.5079  0.1946  6.3744  0.1588  0.4039  0.2757
+  9  5.3440  0.2063  6.3157  0.1638  0.4130  0.2826
+ 10  5.2002  0.2149  6.2791  0.1663  0.4213  0.2881
+ 11  5.0692  0.2259  6.2440  0.1676  0.4288  0.2921
+ 12  4.9552  0.2363  6.2161  0.1701  0.4347  0.2960
+ 13  4.8525  0.2435  6.1896  0.1704  0.4391  0.2987
+ 14  4.7585  0.2527  6.1726  0.1715  0.4431  0.3011
+ 15  4.6704  0.2609  6.1572  0.1727  0.4458  0.3032
+  Best validation loss: 6.1572
+  Training time: 7512.6s
+
+Plot saved -> C:\Users\NS\Downloads\Session based recommentation system\End Sem\KAN5 - Hybrid - Latest\KAN5 - Hybrid - Latest\plots\comparison.png
+
+==============================================================================
+  FINAL RESULTS:  Vanilla GRU  vs  KAN-GRU
+==============================================================================
++----------+---------------+----------------+----------------------+
+| Metric   |   Vanilla-GRU |        KAN-GRU | KAN-GRU vs Vanilla   |
++==========+===============+================+======================+
+| Val Loss |    5.9691     |    5.8537      | up 0.1154            |
++----------+---------------+----------------+----------------------+
+| Accuracy |    0.1642     |    0.1727      | up 0.0085            |
++----------+---------------+----------------+----------------------+
+| HR@10    |    0.4239     |    0.4458      | up 0.0219            |
++----------+---------------+----------------+----------------------+
+| NDCG@10  |    0.288      |    0.3032      | up 0.0152            |
++----------+---------------+----------------+----------------------+
+| Time(s)  | 2311.4        | 7512.6         | +5201.1              |
++----------+---------------+----------------+----------------------+
+| Params   |    2.2837e+06 |    2.33247e+06 | +48,768              |
++----------+---------------+----------------+----------------------+
+
+Checkpoints:
+  Vanilla-GRU: C:\Users\NS\Downloads\Session based recommentation system\End Sem\KAN5 - Hybrid - Latest\KAN5 - Hybrid - Latest\checkpoints\vanilla_gru.pt
+  KAN-GRU: C:\Users\NS\Downloads\Session based recommentation system\End Sem\KAN5 - Hybrid - Latest\KAN5 - Hybrid - Latest\checkpoints\kan_gru.pt

@@ -18,5 +18,13 @@ def ndcg_at_k(logits, targets, k=TOP_K):
     return (hits * disc).sum(-1).mean().item()
 
 
+def mrr_at_k(logits, targets, k=TOP_K):
+    _, topk = torch.topk(logits, k, dim=-1)
+    hits = topk == targets.unsqueeze(1)
+    ranks = torch.arange(1, k + 1, dtype=torch.float, device=logits.device).unsqueeze(0)
+    reciprocal = torch.where(hits, 1.0 / ranks, torch.zeros_like(ranks))
+    return reciprocal.max(dim=1).values.mean().item()
+
+
 def n_params(model):
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
