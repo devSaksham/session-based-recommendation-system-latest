@@ -34,7 +34,7 @@ for name, ModelClass in [("RNN", RNNModel), ("KAN", KANModel), ("Hybrid", Hybrid
     torch.save(model.state_dict(), f"checkpoints/{name.lower()}.pt")
     # Final val metrics
     crit = nn.CrossEntropyLoss()
-    vl, va, vhr, vndcg, vmrr = _run_epoch(model, test_loader, crit)
+    vl, va, vhr, vndcg, vmrr, *_ = _run_epoch(model, test_loader, crit)
     results[name] = dict(hist=hist, time=elapsed, params=n_params(model),
                          loss=vl, acc=va, hr=vhr, ndcg=vndcg, mrr=vmrr)
 

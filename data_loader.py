@@ -1,4 +1,5 @@
 import os, gzip, shutil
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import requests, numpy as np, pandas as pd, torch
@@ -270,3 +271,41 @@ def get_loaders(train, test):
     kw = dict(batch_size=BATCH_SIZE, collate_fn=collate)
     return (DataLoader(SeqDataset(train), shuffle=True,  **kw),
             DataLoader(SeqDataset(test),  shuffle=False, **kw))
+
+
+def build_markov_transition_prior(train, n_items, top_k=MARKOV_TOP_K):
+    """Build a compact last-item -> likely-next-item prior from train windows."""
+    transitions = defaultdict(Counter)
+    target_counts = Counter()
+    for seq, target in train:
+        transitions[seq[-1]][target] += 1
+        target_counts[target] += 1
+
+    prior_indices = torch.zeros((n_items, top_k), dtype=torch.long)
+    prior_scores = torch.zeros((n_items, top_k), dtype=torch.float)
+    total_targets = sum(target_counts.values())
+    n_targets = max(1, len(target_counts))
+    smoothing = float(MARKOV_PRIOR_SMOOTHING)
+
+    for last_item, counts in transitions.items():
+        row_total = sum(counts.values())
+        scored = []
+        for target, count in counts.items():
+            p_cond = (count + smoothing) / (row_total + smoothing * len(counts))
+            p_global = (target_counts[target] + smoothing) / (total_targets + smoothing * n_targets)
+            score = np.log(p_cond / p_global)
+            score = float(np.clip(score, 0.0, MARKOV_PRIOR_MAX_SCORE))
+            if score > 0.0:
+                scored.append((target - 1, score, count))
+
+        scored.sort(key=lambda item: (item[1], item[2]), reverse=True)
+        for col, (target_idx, score, _) in enumerate(scored[:top_k]):
+            prior_indices[last_item, col] = target_idx
+            prior_scores[last_item, col] = score
+
+    covered_states = int((prior_scores.sum(dim=1) > 0).sum().item())
+    print(
+        f"  markov_prior_top_k={top_k}  covered_last_items={covered_states}  "
+        f"coverage={covered_states / max(1, n_items - 1):.1%}"
+    )
+    return prior_indices, prior_scores

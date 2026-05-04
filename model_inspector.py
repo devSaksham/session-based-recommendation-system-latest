@@ -44,6 +44,7 @@ def display_training_setup(model, train_loader, val_loader, optimizer, scheduler
         ("TRAIN_BATCHES", len(train_loader)),
         ("VAL_BATCHES", len(val_loader)),
         ("OPTIMIZER", optimizer.__class__.__name__),
+        ("ACTIVE_LOSS", getattr(criterion, "display_name", criterion.__class__.__name__)),
         ("LOSS", criterion.__class__.__name__),
         ("SCHEDULER", scheduler.__class__.__name__),
     ])

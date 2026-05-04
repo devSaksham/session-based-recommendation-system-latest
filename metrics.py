@@ -7,11 +7,18 @@ def top1_acc(logits, targets):
 
 
 def hr_at_k(logits, targets, k=TOP_K):
+    k = min(k, logits.size(-1))
     _, topk = torch.topk(logits, k, dim=-1)
     return (topk == targets.unsqueeze(1)).any(1).float().mean().item()
 
 
+def recall_at_k(logits, targets, k=TOP_K):
+    # With one next-item label per sample, Recall@K is identical to HR@K.
+    return hr_at_k(logits, targets, k)
+
+
 def ndcg_at_k(logits, targets, k=TOP_K):
+    k = min(k, logits.size(-1))
     _, topk = torch.topk(logits, k, dim=-1)
     hits    = (topk == targets.unsqueeze(1)).float()
     disc    = 1.0 / torch.log2(torch.arange(2, k + 2, dtype=torch.float, device=logits.device))
@@ -19,6 +26,7 @@ def ndcg_at_k(logits, targets, k=TOP_K):
 
 
 def mrr_at_k(logits, targets, k=TOP_K):
+    k = min(k, logits.size(-1))
     _, topk = torch.topk(logits, k, dim=-1)
     hits = topk == targets.unsqueeze(1)
     ranks = torch.arange(1, k + 1, dtype=torch.float, device=logits.device).unsqueeze(0)
