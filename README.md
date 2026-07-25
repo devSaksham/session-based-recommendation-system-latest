@@ -1,5 +1,7 @@
 # YooChoose: RNN vs KAN vs Hybrid (3-Way Comparison)
 
+A PyTorch research project comparing three architectures for **session-based recommendation** on the [YOOCHOOSE](https://www.kaggle.com/datasets/chadgostopp/recsys-challenge-2015) e-commerce clickstream dataset: a classic GRU-based RNN, a from-scratch Kolmogorov-Arnold Network (KAN), and a Hybrid model that lets a KAN layer refine GRU output. All three are trained and evaluated under a shared pipeline and benchmarked on HR@10, NDCG@10, and accuracy.
+
 ## Project Structure
 ```
 ├── compare.py          ← ★ Run this
